@@ -15,7 +15,7 @@ image_version_get_release_type() {
 
 image_version_get_flavour_tag() {
 	RES=""
-	if [ "${FLAVOUR}" != "${}" ]; then
+	if [ "${FLAVOUR}" != "tuxbox" ]; then
 		RES="${FLAVOUR}-flavour_"
 	fi
 	echo "$RES"
