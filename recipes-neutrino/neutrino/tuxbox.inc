@@ -10,7 +10,8 @@ PV = "3.22.0-${SRCPV}"
 DEFAULT_THEME ?= "Neutrino-3.0"
 
 EXTRA_OECONF_append += "--with-default-theme=${DEFAULT_THEME} \
-                        --with-stb-hal-includes=${STAGING_INCDIR}/libstb-hal \
+                        --with-boxtype=${TARGET_ARCH}box \
+			--with-boxmodel=${MACHINE} \
 "
 
 do_install_append += "mv -f ${D}${sysconfdir}/neutrino/config/bad_package_pattern.list.sample ${D}${sysconfdir}/neutrino/config/bad_package_pattern.list"

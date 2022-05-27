@@ -70,6 +70,8 @@ EXTRA_OECONF = " \
 	--exec_prefix=${N_EXEC_PREFIX} \
 	--includedir=${N_PREFIX}/include \
 	\
+	--with-stb-hal-includes=${STAGING_INCDIR}/libstb-hal \
+	\
 	--with-configdir=${N_CONFIG_DIR} \
 	--with-controldir_var=${N_CONTROL_DIR_VAR} \
 	\
