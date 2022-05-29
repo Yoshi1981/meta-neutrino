@@ -22,7 +22,7 @@ LICENSE = "GPLv2"
 # This will make the package using them machine specific but this is much
 # better than having a machine specific C library. This does mean your
 # recipe needs a
-#    do_configure[depends] += "virtual/kernel:do_shared_workdir"
+#    do_configure[depends] += "virtual/kernel_do_shared_workdir"
 # but again, that is fine and makes total sense.
 #
 # There can also be a case where your kernel extremely old and you want
@@ -75,15 +75,15 @@ do_install() {
 	find ${D}${includedir} -name ..install.cmd | xargs rm -f
 }
 
-do_install:append:aarch64 () {
+do_install_append_aarch64 () {
         do_install_armmultilib
 }
 
-do_install:append:arm () {
+do_install_append_arm () {
 	do_install_armmultilib
 }
 
-do_install:append:armeb () {
+do_install_append_armeb () {
 	do_install_armmultilib
 }
 
@@ -103,8 +103,8 @@ do_install_armmultilib () {
 
 BBCLASSEXTEND = "nativesdk"
 
-RDEPENDS:${PN}-dev = ""
-RRECOMMENDS:${PN}-dbg = "${PN}-dev (= ${EXTENDPKGV})"
+RDEPENDS_${PN}-dev = ""
+RRECOMMENDS_${PN}-dbg = "${PN}-dev (= ${EXTENDPKGV})"
 
 INHIBIT_DEFAULT_DEPS = "1"
 DEPENDS += "unifdef-native bison-native rsync-native"
