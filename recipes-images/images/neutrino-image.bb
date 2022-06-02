@@ -5,4 +5,6 @@ include neutrino-image-base.inc
 IMAGESIZE ?= "" 
 IMAGE_INSTALL += "${@'${BIG_IMAGE_FILES}' if IMAGESIZE != 'small' else ''}"
 
-PV = "${DISTRO_VERSION_NUMBER}"
+PV = "${DISTRO_BUILD_VERSION}"
+PR = "r1"
+

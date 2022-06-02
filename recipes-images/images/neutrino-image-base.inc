@@ -20,7 +20,12 @@ set_root_passwd() {
    rm -rf ${IMAGE_ROOTFS}/tmp/*
 }
 
-ROOTFS_POSTPROCESS_COMMAND += "set_image_version;"
+# ROOTFS_PREPROCESS_COMMAND += "set_image_build_version; "
+# set_image_build_version () {
+# 	echo ${BUILD_VERSION} > ${DEPLOY_DIR_IMAGE}/build_version
+# }
+
+ROOTFS_POSTPROCESS_COMMAND += "set_image_version; "
 # We create file /etc/image-version for common use (required by some plugins)
 # and for compatibility we make a symlink from /etc/image-version to /.version
 # required by neutrino itself.
@@ -29,17 +34,16 @@ set_image_version () {
 	META_VERSION=${IMAGE_META_VERSION}
 	RELEASE_NAME="${IMAGE_BASENAME} ${META_VERSION}"
 	RELEASE_NAME_DISCRIBE=`git -C ${COREBASE}/$META_NAME  describe --always --tags --dirty`
+	RELEASE_STATE=${IMAGE_RELEASE_STATE}
 
-	# Set the release type within version files and readable text content for gui
-	RELASE_TYPE=${IMAGE_RELEASE_TYPE}
-
-	IMAGE_DESCRIPTION="${MACHINE_BRAND}-${MACHINE_NAME} [${ARCH}-${MACHINE}] ${RELASE_TYPE}"
+	IMAGE_DESCRIPTION="${MACHINE_BRAND}-${MACHINE_NAME} [${ARCH}-${MACHINE}] ${DISTRO_TYPE}"
 
 	# get content of ../imageversion file
 	# required to synchronize version entry with content of ../imageversion file, which is used for image updates
-	echo ${IMAGE_NAME} > ${DEPLOY_DIR_IMAGE}/imageversion
+# 	echo ${IMAGE_NAME} > ${DEPLOY_DIR_IMAGE}/imageversion
 
-	IMAGE_STAMP_STR=`cat ${DEPLOY_DIR_IMAGE}/imageversion`
+# 	IMAGE_STAMP_STR=`cat ${DEPLOY_DIR_IMAGE}/build_version`
+	IMAGE_STAMP_STR=${BUILD_VERSION}
 	IMAGE_STAMP_LEN=${#IMAGE_STAMP_STR}
 	IMAGE_STAMP_START=`expr ${IMAGE_STAMP_LEN}-14`
 	IMAGE_STAMP=`echo ${IMAGE_STAMP_STR} | cut -d '-' -f3`
@@ -76,7 +80,7 @@ set_image_version () {
 
 	# Finally we create content for update.urls file.
 	if [ ! -z ${RELEASE_TEXT_LOCATION_HOST} ]; then
-		echo "${IMAGE_LOCATION} ${RELEASE_STATE}${DISTRO_VERSION_NUMBER_CYCLE}${IMAGE_BUILD_TIME_STAMP} MD5 ${RELEASE_NAME} ${IMAGE_DESCRIPTION} ${UPDATE_SERVER_URL}" > ${RELEASE_TEXT_LOCATION_HOST}
+		echo "${IMAGE_LOCATION} ${IMAGE_RELEASE_STATE}${DISTRO_VERSION_NUMBER_CYCLE}${IMAGE_BUILD_TIME_STAMP} MD5 ${RELEASE_NAME} ${IMAGE_DESCRIPTION} ${UPDATE_SERVER_URL}" > ${RELEASE_TEXT_LOCATION_HOST}
 	fi
 }
 
@@ -238,6 +242,7 @@ IMAGE_INSTALL += " \
 EXTRA_IMAGEDEPENDS = " \
 	lshw \
 	samba \
+	webmin \
 	\
 	browser \
 	dropbear \
@@ -252,7 +257,6 @@ EXTRA_IMAGEDEPENDS = " \
 	stb-log \
 	stb-move \
 	stb-shell \
-	webmin \
 	\
 	autoreboot \
 	epgscan \

@@ -1,14 +1,15 @@
 
 # set release type, configured in local.conf
-image_version_get_release_type() {
-	if [ "${RELEASE_STATE}" = "0" ]; then
-		RES="release"
-	elif [ "${RELEASE_STATE}" = "1" ]; then
-		RES="beta"
-	elif [ "${RELEASE_STATE}" = "2" ]; then
-		RES="nightly"
+image_version_get_release_state() {
+	RES=""
+	if [ "${DISTRO_TYPE}" == "release" ]; then
+		RES="0"
+	elif [ "${DISTRO_TYPE}" == "beta" ]; then
+		RES="1"
+	elif [ "${DISTRO_TYPE}" == "nightly" ]; then
+		RES="2"
 	else
-		RES="personal"
+		RES="3"
 	fi
 	echo "$RES"
 }
@@ -59,17 +60,6 @@ image_version_get_meta_version() {
 	META_POKY_VERSION=`get_poky_version`
 	META_TUXBOX_VERSION=`get_tuxbox_version`
 	RES="$META_TUXBOX_TAG-$META_POKY_VERSION-$META_TUXBOX_VERSION"
-
-	# If we found a user defined version it will be preferred
-	if [ "${DISTRO_CUSTOM_VERSION}" != "" ]; then
-		RES=${DISTRO_CUSTOM_VERSION}
-	fi
-
-	# If no meta version or any user version was found then RES contains the
-	# default distro version number which is defined in tuxbox.conf.
-	if [ -z $RES ]; then
-		RES=${DISTRO_VERSION_NUMBER}
-	fi
 	echo "$RES"
 }
 
@@ -79,15 +69,12 @@ image_version_get_flavour_suffix() {
 }
 
 image_version_get_filename_prefix() {
-	RES=${IMAGE_NAME}
-	if [ "${INHIBIT_EXTENDED_IMAGE_VERSION}" = "0" ]; then
-		RES=${IMAGE_NAME}_`get_flavour_suffix`
-	fi
+	RES=${IMAGE_NAME}`get_flavour_suffix`
 	echo "$RES"
 }
 
 image_version_get_filename_latest_prefix() {
-	echo ${DISTRO}_${MACHINE}
+	echo ${DISTRO_NAME}_${MACHINE}
 }
 
 image_version_get_yearly_tag() {
@@ -120,9 +107,9 @@ image_version_get_build_increment() {
 	fi
 }
 
-EXPORT_FUNCTIONS get_release_type  get_flavour_tag  get_poky_version  get_meta_tuxbox get_tuxbox_tag  get_tuxbox_version  get_meta_version  get_flavour_suffix  get_filename_prefix  get_filename_latest_prefix get_yearly_tag get_build_increment
+EXPORT_FUNCTIONS get_release_state  get_flavour_tag  get_poky_version  get_meta_tuxbox get_tuxbox_tag  get_tuxbox_version  get_meta_version  get_flavour_suffix  get_filename_prefix  get_filename_latest_prefix get_yearly_tag get_build_increment
 
-export IMAGE_RELEASE_TYPE="`get_release_type`"
+export IMAGE_RELEASE_STATE="`get_release_state`"
 export IMAGE_FLAVOUR_TAG="`get_flavour_tag`"
 export IMAGE_YEARLY_TAG="`get_yearly_tag`"
 export IMAGE_POKY_VERSION="`get_poky_version`"
