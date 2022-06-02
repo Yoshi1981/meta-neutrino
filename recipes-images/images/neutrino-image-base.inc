@@ -185,7 +185,7 @@ PLUGIN_LUA_INSTALL = "	\
 	zdfhbbtv \
 "
 
-PLUGIN_INSTALL += " \
+PLUGIN_INSTALL_append= " \
 	${PLUGIN_LUA_INSTALL} \
 "
 
@@ -215,7 +215,6 @@ IMAGE_INSTALL += " \
 	openssh \
 	openssl \
 	opkg \
-	oscam \
 	pv \
 	rpcbind \
 	rsync \
@@ -239,7 +238,6 @@ IMAGE_INSTALL += " \
 EXTRA_IMAGEDEPENDS = " \
 	lshw \
 	samba \
-	webmin \
 	\
 	browser \
 	dropbear \
@@ -254,6 +252,7 @@ EXTRA_IMAGEDEPENDS = " \
 	stb-log \
 	stb-move \
 	stb-shell \
+	webmin \
 	\
 	autoreboot \
 	epgscan \
