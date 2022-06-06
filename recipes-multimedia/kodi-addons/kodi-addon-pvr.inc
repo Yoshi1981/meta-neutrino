@@ -66,5 +66,7 @@ INSANE_SKIP_${PN} = "dev-so file-rdeps"
 FILES_${PN} += "${datadir}/kodi"
 FILES_${PN}-dbg += "${datadir}/kodi/addons/*/.debug/"
 
-do_qa_staging() {
-}
+# do_qa_staging() {
+# }
+
+do_package_qa[noexec] = "1"
