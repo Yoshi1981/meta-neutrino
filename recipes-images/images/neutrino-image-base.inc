@@ -66,7 +66,8 @@ set_image_version () {
 	echo "homepage=${HOME_URL}"                                                     				>> ${IMAGE_ROOTFS_ETC_DIR}/image-version
 	echo "imagename=${IMAGE_BASENAME}"  	                                         				>> ${IMAGE_ROOTFS_ETC_DIR}/image-version
 	echo "machine=${MACHINE}"                                                       				>> ${IMAGE_ROOTFS_ETC_DIR}/image-version
-	echo "version=${RELEASE_STATE}${DISTRO_VERSION_NUMBER_CYCLE}${IMAGE_BUILD_TIME_STAMP}"   			>> ${IMAGE_ROOTFS_ETC_DIR}/image-version
+	VERSION_STAMP="${RELEASE_STATE}${DISTRO_VERSION_NUMBER_CYCLE}${IMAGE_BUILD_TIME_STAMP}"
+	echo "version=${VERSION_STAMP}"   										>> ${IMAGE_ROOTFS_ETC_DIR}/image-version
 	echo "imagedescription=${IMAGE_DESCRIPTION}"                                    				>> ${IMAGE_ROOTFS_ETC_DIR}/image-version
 	echo "imageversion=${META_VERSION}"                                             				>> ${IMAGE_ROOTFS_ETC_DIR}/image-version
 	echo "describe=${RELEASE_NAME_DISCRIBE}"                                        				>> ${IMAGE_ROOTFS_ETC_DIR}/image-version
@@ -80,7 +81,7 @@ set_image_version () {
 
 	# Finally we create content for update.urls file.
 	if [ ! -z ${RELEASE_TEXT_LOCATION_HOST} ]; then
-		echo "${IMAGE_LOCATION} ${IMAGE_RELEASE_STATE}${DISTRO_VERSION_NUMBER_CYCLE}${IMAGE_BUILD_TIME_STAMP} MD5 ${RELEASE_NAME} ${IMAGE_DESCRIPTION} ${UPDATE_SERVER_URL}" > ${RELEASE_TEXT_LOCATION_HOST}
+		echo "${IMAGE_LOCATION} ${VERSION_STAMP} MD5 ${RELEASE_NAME} ${IMAGE_DESCRIPTION} ${UPDATE_SERVER_URL}" > ${RELEASE_TEXT_LOCATION_HOST}
 	fi
 }
 
