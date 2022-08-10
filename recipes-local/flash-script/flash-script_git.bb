@@ -1,5 +1,5 @@
 
-DESCRIPTION = "Flash script for ${MACHINE_BRAND}-${MACHINE}"
+DESCRIPTION = "Flash script for ${MACHINE_BRAND}-${IMAGEDIR}"
 HOMEPAGE = "https://github.com/tuxbox-neutrino"
 MAINTAINER = "Tuxbox-Developers"
 LICENSE = "BSD-2-Clause"
@@ -9,7 +9,7 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 IMAGE_FEATURES += " ${PN} "
 
-SRC_URI = "git://github.com/tuxbox-neutrino/flash-script.git;branch=${MACHINE};protocol=https"
+SRC_URI = "git://github.com/tuxbox-neutrino/flash-script.git;branch=${IMAGEDIR};protocol=https"
 
 PR = "r0"
 PV = "0.1+git${SRCPV}"
