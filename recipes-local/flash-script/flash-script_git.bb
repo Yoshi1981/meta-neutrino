@@ -9,7 +9,7 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 IMAGE_FEATURES += " ${PN} "
 
-SRC_URI = "git://github.com/tuxbox-neutrino/flash-script.git;branch=${IMAGEDIR};protocol=https"
+SRC_URI = "git://github.com/tuxbox-neutrino/flash-script.git;branch=${MACHINE_DRIVER};protocol=https"
 
 PR = "r0"
 PV = "0.1+git${SRCPV}"
