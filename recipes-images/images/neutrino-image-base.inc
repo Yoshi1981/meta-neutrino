@@ -81,6 +81,9 @@ set_image_version () {
 
 	# Finally we create content for update.urls file.
 	if [ ! -z ${RELEASE_TEXT_LOCATION_HOST} ]; then
+		if [ test ! -d ${DEPLOY_DIR_IMAGE} ]; then
+			mkdir -p ${DEPLOY_DIR_IMAGE}
+		fi
 		echo "${IMAGE_LOCATION} ${VERSION_STAMP} MD5 ${RELEASE_NAME} ${IMAGE_DESCRIPTION} ${UPDATE_SERVER_URL}" > ${RELEASE_TEXT_LOCATION_HOST}
 	fi
 }
