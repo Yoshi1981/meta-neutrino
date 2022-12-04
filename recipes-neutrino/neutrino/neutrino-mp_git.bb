@@ -1,10 +1,10 @@
-SUMMARY = "Neutrino MP"
+SUMMARY = "Neutrino, a fast and beautiful graphical user interface"
 DESCRIPTION = "${SUMMARY} for ${MACHINE_BRAND}-${MACHINE}."
 SECTION = "libs"
 LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://COPYING;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 
-PR = "r0"
+PR = "r2"
 SRCREV = "${AUTOREV}"
 
 PATCHTOOL = "git"
