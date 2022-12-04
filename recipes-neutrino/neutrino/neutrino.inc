@@ -73,10 +73,12 @@ EXTRA_OECONF = " \
 	--with-stb-hal-includes=${STAGING_INCDIR}/libstb-hal \
 	\
 	--with-configdir=${N_CONFIG_DIR} \
+	--with-controldir=${N_CONTROLDIR} \
 	--with-controldir_var=${N_CONTROL_DIR_VAR} \
 	\
 	--with-plugindir=${N_PLUGIN_DIR} \
 	--with-plugindir_var=${N_PLUGIN_DIR_VAR} \
+	--with-plugindir_mnt=${N_PLUGIN_MNT} \
 	--with-webtvdir=${N_WEBTV_DIR} \
 	--with-webtvdir_var=${N_WEBTV_DIR_VAR} \
 	--with-webradiodir=${N_WEBRADIO_DIR} \
@@ -87,6 +89,25 @@ EXTRA_OECONF = " \
 	--with-iconsdir=${N_ICONS_DIR}  \
 	--with-iconsdir_var=${N_ICONS_DIR}  \
 	--with-zapitdir=${N_ZAPITDIR} \
+	--with-datadir=${N_ZAPITDIR} \
+	--with-datadir_var=${N_DATADIR_VAR} \
+	\
+	--with-fontdir=${N_FONTDIR} \
+	--with-fontdir_var=${N_FONTDIR_VAR} \
+	--with-libdir=${N_LIBDIR} \
+	--with-localedir=${N_LOCALEDIR} \
+	--with-localedir_var=${N_LOCALEDIR_VAR} \
+	--with-themesdir=${N_THEMESDIR} \
+	--with-themesdir_var=${N_THEMESDIR_VAR} \
+	--with-logodir=${N_LOGODIR} \
+	--with-logodir_var=${N_LOGODIR_VAR} \
+	--with-private_httpddir=${N_PRIVATE_HTTPDDIR} \
+	--with-public_httpddir=${N_PUBLIC_HTTPDDIR} \
+	--with-hosted_httpddir=${N_HOSTED_HTTPDDIR} \
+	--with-flagdir=${N_FLAGDIR} \
+	\
+	--with-lcd4liconsdir=${N_LCD4L_ICONSDIR} \
+	--with-lcd4liconsdir_var=${N_LCD4L_ICONSDIR_VAR} \
 	\
 	--with-tmdb-dev-key="${TMDB_DEV_KEY}" \
 	--with-omdb-api-key="${OMDB_API_KEY}" \
@@ -176,6 +197,7 @@ do_install_append() {
 FILES_${PN} += "\
 	/etc \
 	/usr/share \
+	/share \
 	/lib \
 "
 
