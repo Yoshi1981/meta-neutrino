@@ -29,6 +29,8 @@ SRC_URI = " \
 	file://update_done.jpg \
 "
 
+S = "${WORKDIR}/git"
+
 include neutrino.inc
 include ${FLAVOUR}.inc
 

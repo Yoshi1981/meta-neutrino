@@ -49,7 +49,8 @@ SHOUTCAST_DEV_KEY ?= "XXXXXXXXXXXXXXXX"
 
 OMDB_API_KEY ?= "XXXXXXXX"
 
-N_PREFIX = "/usr"
+# to find in neutrino-common-vars.inc
+#N_PREFIX = "/usr" 
 
 N_EXEC_PREFIX = "${N_PREFIX}/bin"
 

@@ -1,5 +1,7 @@
 # this file is reserved for variables to be shared with other neutrino related targets or recipes. e.g. plugins
 
+N_PREFIX = "/usr"
+
 N_CONFIG_DIR = "/etc/neutrino/config"
 N_CONTROLDIR = "/share/tuxbox/neutrino/control"
 N_CONTROL_DIR_VAR = "/etc/neutrino/config"
