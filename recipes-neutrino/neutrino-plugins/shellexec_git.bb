@@ -7,6 +7,8 @@ SRC_URI += " \
 	file://configure.ac.${PLUGIN_NAME} \
 "
 
+DEPENDS += "neutrino-fonts-extra"
+
 ## Hack: shellexec's make install is doing strange things, try to fix it here
 do_install () {
 	install -d ${D}${bindir}
@@ -14,5 +16,7 @@ do_install () {
 	oe_runmake install DESTDIR=${D}
 }
 
-FILES_${PN} += "/var \
+FILES_${PN} += " \
+	/share \
+	/var \
 "

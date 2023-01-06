@@ -6,3 +6,5 @@ DESCRIPTION = "Graphical calendar known as Tuxcal."
 SRC_URI += " \
 	file://configure.ac.${PLUGIN_NAME} \
 "
+
+DEPENDS += "neutrino-fonts-extra"

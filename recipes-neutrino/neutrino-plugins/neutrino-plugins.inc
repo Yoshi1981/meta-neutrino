@@ -25,6 +25,8 @@ PV = "git+${SRCPV}"
 
 SRCREV = "${AUTOREV}"
 
+inherit gitpkgv
+
 # we need an independent file stack for the build, some templates for configure.ac and Makefile.am
 # The plugin source and other required sources itself will be defined inside the file: neutrino-plugins-<provider>-env.inc
 SRC_URI = " \
@@ -42,24 +44,44 @@ ALLOW_EMPTY_neutrino-plugins = "1"
 
 inherit autotools pkgconfig gettext
 
-EXTRA_OECONF += " \
+EXTRA_OECONF = " \
 	--enable-maintainer-mode \
 	--with-target=native \
-	--with-boxtype=armbox \
+	--prefix=${N_PREFIX} \
+	--with-boxtype=${TARGET_ARCH}box \
 	--with-boxmodel=${MACHINE} \
 	\
 	--with-plugindir=${N_PLUGIN_DIR} \
 	--with-plugindir_var=${N_PLUGIN_DIR_VAR} \
+	--with-plugindir_mnt=${N_PLUGIN_DIR_MNT}\
 	--with-webtvdir=${N_WEBTV_DIR} \
 	--with-webtvdir_var=${N_WEBTV_DIR_VAR} \
 	--with-webradiodir=${N_WEBRADIO_DIR} \
 	--with-webradiodir_var=${N_WEBRADIO_DIR_VAR} \
 	--with-luaplugindir=${N_LUAPLUGIN_DIR} \
+	--with-luaplugindir_var=${N_LUAPLUGIN_DIR_VAR} \
 	--with-gamesdir=${N_GAMES_DIR}  \
 	--with-iconsdir=${N_ICONS_DIR}  \
 	--with-iconsdir_var=${N_ICONS_DIR}  \
 	--with-configdir=${N_CONFIG_DIR} \
 	--with-zapitdir=${N_ZAPITDIR} \
+	--with-datadir=${N_DATADIR} \
+	--with-datadir_var=${N_DATADIR_VAR} \
+	--with-controldir=${N_CONTROLDIR} \
+	--with-controldir_var=${N_CONTROLDIR_VAR} \
+	--with-fontdir=${N_FONTDIR} \
+	--with-fontdir_var=${N_FONTDIR_VAR} \
+	--with-libdir=${N_LIBDIR}  \
+	--with-localedir=${N_LOCALEDIR} \
+	--with-localedir_var=${N_LOCALEDIR_VAR} \
+	--with-themesdir=${N_THEMESDIR} \
+	--with-themesdir_var=${N_THEMESDIR_VAR} \
+	--with-logodir=${N_LOGODIR} \
+	--with-logodir_var=${N_LOGODIR_VAR} \
+	--with-private_httpddir=${N_PRIVATE_HTTPDDIR} \
+	--with-public_httpddir=${N_PUBLIC_HTTPDDIR} \
+	--with-hosted_httpddir=${N_HOSTED_HTTPDDIR}  \
+	--with-flagdir=${N_FLAGDIR} \
 "
 
 N_CFLAGS = "-Wall -W -Wshadow -g -O2 -funsigned-char -I${STAGING_INCDIR}/freetype2 -fcommon"
@@ -100,6 +122,7 @@ do_patch () {
 	# with required data e.g. plugin name
 	sed -i -e 's/@P@/${PLUGIN_NAME}/' ${S}/configure.ac
 	sed -i -e 's/@PN@/${PN}/' ${S}/configure.ac
+	sed -i -e 's/@PV@/${GITPKGV}/' ${S}/configure.ac
 	sed -i -e 's|@HP@|${HOMEPAGE}|' ${S}/configure.ac
 
 	sed -i -e 's/@P@/${PLUGIN_NAME}/' ${S}/Makefile.am
@@ -115,8 +138,11 @@ do_install_append() {
 	rm -rf ${D}/usr/share/tuxbox/neutrino/luaplugins
 }
 
-FILES_${PN} = "/usr \
-	       /etc \
+FILES_${PN} = " \
+	/usr \
+	/etc \
 "
 
-FILES_${PN}-dbg += "/usr/share/tuxbox/neutrino/plugins/.debug"
+FILES_${PN}-dbg += " \
+	/usr/share/tuxbox/neutrino/plugins/.debug \
+"

@@ -24,6 +24,7 @@ do_install () {
 	rm -f ${D}${datadir}/fonts/Makefile*
 }
 
-FILES_${PN} = "/usr \
-	       /etc \
+FILES_${PN} = " \
+	/usr \
+	/etc \
 "
