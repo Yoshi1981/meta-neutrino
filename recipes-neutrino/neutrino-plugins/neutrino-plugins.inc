@@ -9,7 +9,7 @@ PLUGIN_NAME = "${PN}"
 
 ## These variables should be defined in plugin recipe and will be override if no description was defined inside plugin recipe
 SECTION = "neutrino-plugin"
-DESCRIPTION ?= "${PLUGIN_NAME}, plugin for neutrino"
+DESCRIPTION ?= "Neutrino plugin: ${PLUGIN_NAME}"
 MAINTAINER ?= "${FLAVOR}-developers"
 HOMEPAGE ?= "https://github.com/tuxbox-neutrino"
 

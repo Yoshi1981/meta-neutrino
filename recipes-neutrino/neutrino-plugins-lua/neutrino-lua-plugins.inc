@@ -7,7 +7,7 @@ include neutrino-lua-plugins-source.inc
 
 SECTION = "neutrino-plugin"
 MAINTAINER = "tuxbox"
-PRE_DESCRIPTION ?= "Neutrino Lua plugin ${SRC_NAME}"
+PRE_DESCRIPTION ?= "Neutrino Lua plugin: ${SRC_NAME}"
 HOMEPAGE = "https://github.com/tuxbox-neutrino/plugin-scripts-lua.git"
 SUMMARY = "${PRE_DESCRIPTION} by ${MAINTAINER}"
 
