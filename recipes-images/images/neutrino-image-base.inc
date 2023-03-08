@@ -98,6 +98,7 @@ BIG_IMAGE_FILES = " \
 	bluez5 \
 	bzip2 \
 	cifs-utils \
+	cronie \
 	dvb-femon \
 	exfat-utils \
 	f2fs-tools \
