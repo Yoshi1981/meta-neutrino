@@ -2,14 +2,17 @@ include neutrino-plugins-ni-env.inc
 
 DESCRIPTION = "Terminal controlled menu manager known as Flexmenu."
 
-# We need an extra template for configure.ac
-SRC_URI += " \
-	file://configure.ac.${PLUGIN_NAME} \
-"
-
 DEPENDS += "neutrino-fonts-extra"
 
-## Hack: shellexec's make install is doing strange things, try to fix it here
+SRC_URI += " \
+	file://0001-shellexec-Makefile.am-fix-install.patch \
+"
+
+do_patch () {
+	git -C ${S}/${PLUGIN_NAME} apply ${S}/0001-shellexec-Makefile.am-fix-install.patch
+}
+
+## Hack: make install is doing strange things, try to fix it here
 do_install () {
 	install -d ${D}${bindir}
 	install -d ${D}${N_PLUGIN_DIR}

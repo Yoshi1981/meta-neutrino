@@ -34,11 +34,11 @@ SRC_URI = " \
 	file://autogen.sh \
 	file://COPYING \
 	\
-	file://configure.ac.template \
-	file://Makefile.am.template \
+	file://configure.ac \
+	file://Makefile.am \
 "
 
-S = "${WORKDIR}/src"
+S = "${WORKDIR}"
 
 ALLOW_EMPTY_neutrino-plugins = "1"
 
@@ -87,46 +87,6 @@ EXTRA_OECONF = " \
 N_CFLAGS = "-Wall -W -Wshadow -g -O2 -funsigned-char -I${STAGING_INCDIR}/freetype2 -fcommon"
 N_CXXFLAGS = "${N_CFLAGS}"
 N_LDFLAGS += "-Wl,--hash-style=gnu -Wl,-rpath-link,${STAGING_DIR_HOST}${libdir},-lfreetype -lcrypto -lssl -lpng -lcurl -lz -lpthread"
-
-do_patch () {
-	# Here we misuse the patch routine to assemble and modify some required files in the source directory.
-	# First we move a general fileset e.g. autogen.sh, acinclude.m4, COPYING etc. into source directory...
-	if test -f ${WORKDIR}/acinclude.m4; then
-		cp -f ${WORKDIR}/acinclude.m4 ${S}/acinclude.m4
-	fi
-	if test -f ${WORKDIR}/autogen.sh; then
-		cp -f ${WORKDIR}/autogen.sh ${S}/autogen.sh
-	fi
-
-	# ... then we move the templates for configure.ac and Makefile.am into source directory.
-	# Btw: if we found an extra configure.ac or template file, it will be used instead default template file, because
-	# in some cases it could be easier to have a completed file.
-	if test -f ${WORKDIR}/configure.ac.${PLUGIN_NAME}; then
-		cp -f ${WORKDIR}/configure.ac.${PLUGIN_NAME} ${S}/configure.ac
-	else
-		cp -f ${WORKDIR}/configure.ac.template ${S}/configure.ac
-	fi
-
-	if test -f ${WORKDIR}/Makefile.am.${PLUGIN_NAME}; then
-		cp -f ${WORKDIR}/Makefile.am.${PLUGIN_NAME} ${S}/Makefile.am
-	else
-		cp -f ${WORKDIR}/Makefile.am.template ${S}/Makefile.am
-	fi
-
-	# copy available Makefiles from "${WORKDIR}"/${PLUGIN_NAME} in to plugin source directory
-	if test -f ${WORKDIR}/${PLUGIN_NAME}/Makefile.am; then
-		cp -f ${WORKDIR}/${PLUGIN_NAME}/Makefile.am ${S}/${PLUGIN_NAME}
-	fi
-
-	# Finally we modify configure.ac and Makefile.am, means: we replace the placeholders
-	# with required data e.g. plugin name
-	sed -i -e 's/@P@/${PLUGIN_NAME}/' ${S}/configure.ac
-	sed -i -e 's/@PN@/${PN}/' ${S}/configure.ac
-	sed -i -e 's/@PV@/${GITPKGV}/' ${S}/configure.ac
-	sed -i -e 's|@HP@|${HOMEPAGE}|' ${S}/configure.ac
-
-	sed -i -e 's/@P@/${PLUGIN_NAME}/' ${S}/Makefile.am
-}
 
 do_compile () {
 	unset CFLAGS CPPFLAGS CXXFLAGS LDFLAGS

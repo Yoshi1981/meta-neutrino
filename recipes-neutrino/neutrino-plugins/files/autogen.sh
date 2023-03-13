@@ -1,12 +1,12 @@
 #!/bin/sh
 
-package="ni-neutrino-plugins"
+package="neutrino-plugins"
 
-srcdir=`dirname $0`
-test -z "$srcdir" && srcdir=.
+#srcdir=`dirname $0`
+#test -z "$srcdir" && srcdir=.
 
 cd "$srcdir"
-echo "Generating configuration files for $package, please wait ..."
+echo "Generating configuration files for $package within $srcdir, please wait ..."
 
 aclocal --force
 libtoolize --force

@@ -1,0 +1,28 @@
+From 5d1ee48516d5394615416a41d0ef415aa32baf83 Mon Sep 17 00:00:00 2001
+From: Thilo Graf <dbt@novatux.de>
+Date: Sun, 12 Mar 2023 20:28:32 +0100
+Subject: [PATCH] shellexec: Makefile.am: fix install
+
+We are allready inside (DESTDIR)$(PLUGINDIR)
+---
+ Makefile.am | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index 07de27e..6894fc9 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -47,8 +47,8 @@ install-data-hook:
+ 	set -e; cd $(DESTDIR)$(PLUGINDIR); \
+ 		mv -f shellexec.so 00_shellexec.so; \
+ 		mv -f shellexec.cfg 00_shellexec.cfg; \
+-		mv -f shellexec_hint.png 00_shellexec_hint.png
+-	ln -sf $(PLUGINDIR)/00_shellexec.so $(DESTDIR)$(bindir)/shellexec
++		mv -f shellexec_hint.png 00_shellexec_hint.png; \
++		ln -sf 00_shellexec.so $(DESTDIR)$(bindir)/shellexec
+ 
+ uninstall-hook:
+ 	set -e; cd $(DESTDIR)$(PLUGINDIR); \
+-- 
+2.30.2
+

@@ -1,0 +1,27 @@
+From f61f5524f500c0cb67a12ec49a2f3d1383f7d451 Mon Sep 17 00:00:00 2001
+From: Thilo Graf <dbt@novatux.de>
+Date: Sun, 12 Mar 2023 20:52:35 +0100
+Subject: [PATCH] tuxwetter: Makefile.am: fix install
+
+We must be inside $(DESTDIR)$(PLUGINDIR)
+---
+ Makefile.am | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index 4321392..ec54d6c 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -54,7 +54,8 @@ tuxwetter_DATA = \
+ 	tuxwetter.mcfg
+ 
+ install-data-hook:
+-	ln -sf $(PLUGINDIR)/tuxwetter.so $(DESTDIR)$(bindir)/tuxwetter
++	set -e; cd $(DESTDIR)$(PLUGINDIR); \
++		ln -sf tuxwetter.so $(DESTDIR)$(bindir)/tuxwetter
+ 
+ uninstall-hook:
+ 	rm -f $(DESTDIR)$(bindir)/tuxwetter
+-- 
+2.30.2
+

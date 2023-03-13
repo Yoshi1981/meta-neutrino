@@ -1,4 +1,4 @@
-SUBDIRS = @P@
+SUBDIRS = turnoff-power
 
 install-data-hook:
 # 	$(INSTALL) -d $(DESTDIR)$(LUAPLUGINDIR)

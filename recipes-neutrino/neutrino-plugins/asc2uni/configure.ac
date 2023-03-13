@@ -1,4 +1,5 @@
 AC_INIT([@PN@],[@PV@],[@HP@])
+AC_CONFIG_SRCDIR([asc2uni])
 AM_INIT_AUTOMAKE([foreign])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES])
 AC_GNU_SOURCE
@@ -37,7 +38,7 @@ AC_SUBST(NEUTRINO_BUILD)
 
 AC_CONFIG_FILES([
 Makefile
-@P@/Makefile
+asc2uni/Makefile
 ])
 
 AC_OUTPUT

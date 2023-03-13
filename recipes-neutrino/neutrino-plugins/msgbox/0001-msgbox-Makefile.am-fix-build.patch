@@ -1,0 +1,37 @@
+From ea6d854dbc5be780d5fddb240c65b2daad0e7535 Mon Sep 17 00:00:00 2001
+From: Thilo Graf <dbt@novatux.de>
+Date: Sun, 12 Mar 2023 19:44:12 +0100
+Subject: [PATCH] msgbox: Makefile.am: fix build
+
+---
+ Makefile.am | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index 8bdd2f5..002b74f 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -2,7 +2,7 @@ AM_CPPFLAGS =  \
+ 	@FREETYPE_CFLAGS@ \
+ 	-I$(top_srcdir)/include
+ 
+-noinst_PROGRAMS = msgbox
++bin_PROGRAMS = msgbox
+ 
+ msgbox_SOURCES = \
+ 	msgbox.c \
+@@ -17,9 +17,6 @@ msgbox_SOURCES = \
+ 	png_helper.cpp
+ 
+ msgbox_LDADD = \
+-	@FREETYPE_LIBS@
+-
+-install-exec-local:
+-	install -d $(DESTDIR)/usr/bin
+-	install -m 0755 msgbox $(DESTDIR)/usr/bin/msgbox
++	@FREETYPE_LIBS@ \
++	@PNG_LIBS@
+ 
+-- 
+2.30.2
+

@@ -1,0 +1,62 @@
+From 2f28c338f700ab5abd1501d9d257246010bc628d Mon Sep 17 00:00:00 2001
+From: Thilo Graf <dbt@novatux.de>
+Date: Sun, 12 Mar 2023 20:42:49 +0100
+Subject: [PATCH] tuxcom: Makefile.am: fix install
+
+---
+ Makefile.am | 37 +++++++++++++++++++++++--------------
+ 1 file changed, 23 insertions(+), 14 deletions(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index 9259f2d..59b4750 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -1,22 +1,31 @@
+-
+-AM_CPPFLAGS =  \
++AM_CPPFLAGS = \
+ 	@FREETYPE_CFLAGS@ \
+ 	-I$(top_srcdir)/include
+ 
+-noinst_PROGRAMS = tuxcom
++plugindir = $(PLUGINDIR)
+ 
+-#tuxcom_la_CFLAGS = -DDREAMBOX 
++plugin_PROGRAMS = tuxcom.so
+ 
+-tuxcom_SOURCES = \
++tuxcom_so_SOURCES = \
+ 	tuxcom.c \
+ 	rc_device.c
+ 
+-tuxcom_LDADD = \
+-	 @FREETYPE_LIBS@
+-	 
+-install-exec-local:
+-	install -d $(DESTDIR)$(PLUGINDIR)
+-	install -d $(DESTDIR)$(CONFIGDIR)
+-	install -d $(DESTDIR)$(CONFIGDIR)/tuxcom
+-	install -m 0755 tuxcom $(DESTDIR)$(PLUGINDIR)/tuxcom.so
+-	install -m 0644 $(srcdir)/tuxcom.cfg $(DESTDIR)$(PLUGINDIR)
++tuxcom_so_LDADD = \
++	@FREETYPE_LIBS@
++
++plugin_DATA = \
++	tuxcom.cfg \
++	tuxcom_hint.png
++
++tuxcomdir = $(CONFIGDIR)/tuxcom
++
++#tuxcom_DATA =
++
++#tuxcom_SCRIPTS =
++
++# creating empty tuxcomdir until we have no DATA or SCRIPTS to install
++install-data-hook:
++	install -d $(DESTDIR)$(tuxcomdir)
++
++uninstall-hook:
++	-rmdir $(DESTDIR)$(tuxcomdir)
+-- 
+2.30.2
+

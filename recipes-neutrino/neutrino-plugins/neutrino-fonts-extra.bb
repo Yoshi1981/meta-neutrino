@@ -1,8 +1,8 @@
 # for some common variables, e.g. plugin paths
 include ../neutrino/neutrino-common-vars.inc
 
-LICENSE = "GPL-2.0"
-LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0;md5=801f80980d171dd6425610833a22dbe6"
+LICENSE = "CC-BY-SA-4.0"
+LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/${LICENSE};md5=4084714af41157e38872e798eb3fe1b1"
 
 ## These variables should be defined in plugin recipe and will be override if no description was defined inside plugin recipe
 SECTION = "fonts"
@@ -13,13 +13,18 @@ HOMEPAGE = "https://github.com/tuxbox-neutrino"
 ## summary contains the plugin description
 SUMMARY = "${DESCRIPTION}"
 
-PACKAGE_ARCH = "all"
+PACKAGE_ARCH = "allarch"
+
+PROVIDES = "virtual/neutrino-extra-fonts"
+RPROVIDES_${PN} = "virtual/neutrino-extra-fonts"
+# PROVIDES = "neutrino-extra-fonts"
 
 SRC_URI = " \
-	file://pakenham.ttf \
+	https://www.fontrepo.com/font/4281/pakenham.ttf \
 "
 
-PV = "1"
+SRC_URI[sha256sum] = "4ebb0c780855c08f45a0c98c7e9f4294370ccbdbf45b99f0a78adb6fbcf7ecfb"
+
 PR = "r3"
 
 do_configure[noexec] = "1"
