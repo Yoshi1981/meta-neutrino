@@ -1,23 +1,23 @@
 # Base this image on core-image-minimal
 include recipes-core/images/core-image-minimal.bb
 
-inherit image_version
+# inherit image_version
 
 # add default password for root
 
 ROOTFS_POSTPROCESS_COMMAND += "set_root_passwd;"
 set_root_passwd() {
-   ROOTPW_ENCRYPTED=""
-   if [ -n "${ROOTPW}" ]; then
-   ROOTPW_ENCRYPTED=`openssl passwd -crypt -quiet ${ROOTPW}`
-   else
-   ROOTPW_ENCRYPTED="wYNffsf6sozwE"
-   fi
-   sed "s%^root:[^:]*:%root:${ROOTPW_ENCRYPTED}:%" \
-       < ${IMAGE_ROOTFS}/etc/shadow \
-       > ${IMAGE_ROOTFS}/etc/shadow.new;
-   mv ${IMAGE_ROOTFS}/etc/shadow.new ${IMAGE_ROOTFS}/etc/shadow ;
-   rm -rf ${IMAGE_ROOTFS}/tmp/*
+	ROOTPW_ENCRYPTED=""
+	if [ -n "${ROOTPW}" ]; then
+		ROOTPW_ENCRYPTED=`openssl passwd -crypt -quiet ${ROOTPW}`
+	else
+		ROOTPW_ENCRYPTED="wYNffsf6sozwE"
+	fi
+	sed "s%^root:[^:]*:%root:${ROOTPW_ENCRYPTED}:%" \
+	< ${IMAGE_ROOTFS}/etc/shadow \
+	> ${IMAGE_ROOTFS}/etc/shadow.new;
+	mv ${IMAGE_ROOTFS}/etc/shadow.new ${IMAGE_ROOTFS}/etc/shadow ;
+	rm -rf ${IMAGE_ROOTFS}/tmp/*
 }
 
 # ROOTFS_PREPROCESS_COMMAND += "set_image_build_version; "
@@ -31,12 +31,20 @@ ROOTFS_POSTPROCESS_COMMAND += "set_image_version; "
 # required by neutrino itself.
 set_image_version () {
 	META_NAME="meta-neutrino"
-	META_VERSION=${IMAGE_META_VERSION}
-	RELEASE_NAME="${IMAGE_BASENAME} ${META_VERSION}"
+	META_VERSION=$(git -C ${COREBASE}/$META_NAME rev-list --count $(git -C ${COREBASE}/$META_NAME branch --show-current))
+	RELEASE_NAME="${IMAGE_BASENAME}"
 	RELEASE_NAME_DISCRIBE=`git -C ${COREBASE}/$META_NAME  describe --always --tags --dirty`
-	RELEASE_STATE=${IMAGE_RELEASE_STATE}
 
-	IMAGE_DESCRIPTION="${MACHINE_BRAND}-${MACHINE_NAME} [${ARCH}-${MACHINE}] ${DISTRO_TYPE}"
+	RELEASE_STATE="3"
+	if [ "${DISTRO_TYPE}" == "release" ]; then
+		RELEASE_STATE="0"
+	elif [ "${DISTRO_TYPE}" == "beta" ]; then
+		RELEASE_STATE="1"
+	elif [ "${DISTRO_TYPE}" == "nightly" ]; then
+		RELEASE_STATE="2"
+	fi
+
+	IMAGE_DESCRIPTION="${MACHINE_BRAND}-${MACHINE_NAME}-${DISTRO_VERSION}.${META_VERSION}"
 
 	# get content of ../imageversion file
 	# required to synchronize version entry with content of ../imageversion file, which is used for image updates
@@ -52,46 +60,75 @@ set_image_version () {
 	#IMAGE_ROOTFS_ETC_DIR=${D}${sysconfdir}
 	IMAGE_ROOTFS_ETC_DIR=${IMAGE_ROOTFS}/etc
 
+	IMAGE_VERSION_FILE="${IMAGE_ROOTFS_ETC_DIR}/image-version"
+
 	# create content for /etc/image-version file
 	DD=`echo ${IMAGE_STAMP} | cut -c7-8`
 	MM=`echo ${IMAGE_STAMP} | cut -c5-6`
 	YY=`echo ${IMAGE_STAMP} | cut -c1-4`
 	HH=`echo ${IMAGE_STAMP} | cut -c9-10`
 	mm=`echo ${IMAGE_STAMP} | cut -c11-12`
-	echo "builddate=${DD}.${MM}.${YY} ${HH}:${mm}" > ${IMAGE_ROOTFS_ETC_DIR}/image-version
-	echo "box_model=${MACHINE}"                                                     				>> ${IMAGE_ROOTFS_ETC_DIR}/image-version
-	echo "creator=${CREATOR}"                                                       				>> ${IMAGE_ROOTFS_ETC_DIR}/image-version
-	echo "distro=${DISTRO}"                                                             				>> ${IMAGE_ROOTFS_ETC_DIR}/image-version
-	echo "distro_version=${DISTRO_VERSION}"                                                             		>> ${IMAGE_ROOTFS_ETC_DIR}/image-version
-	echo "homepage=${HOME_URL}"                                                     				>> ${IMAGE_ROOTFS_ETC_DIR}/image-version
-	echo "imagename=${IMAGE_BASENAME}"  	                                         				>> ${IMAGE_ROOTFS_ETC_DIR}/image-version
-	echo "machine=${MACHINE}"                                                       				>> ${IMAGE_ROOTFS_ETC_DIR}/image-version
+	echo "builddate=${DD}.${MM}.${YY} ${HH}:${mm}" > ${IMAGE_VERSION_FILE}
+	echo "box_model=${MACHINE}"                                                     				>> ${IMAGE_VERSION_FILE}
+	echo "creator=${CREATOR}"                                                       				>> ${IMAGE_VERSION_FILE}
+	echo "distro=${DISTRO}"                                                             				>> ${IMAGE_VERSION_FILE}
+	echo "distro_version=${DISTRO_VERSION}"                                                             		>> ${IMAGE_VERSION_FILE}
+	echo "homepage=${HOME_URL}"                                                     				>> ${IMAGE_VERSION_FILE}
+	echo "imagename=${IMAGE_BASENAME}"  	                                         				>> ${IMAGE_VERSION_FILE}
+	echo "machine=${MACHINE}"                                                       				>> ${IMAGE_VERSION_FILE}
 	VERSION_STAMP="${RELEASE_STATE}${DISTRO_VERSION_NUMBER_CYCLE}${IMAGE_BUILD_TIME_STAMP}"
-	echo "version=${VERSION_STAMP}"   										>> ${IMAGE_ROOTFS_ETC_DIR}/image-version
-	echo "imagedescription=${IMAGE_DESCRIPTION}"                                    				>> ${IMAGE_ROOTFS_ETC_DIR}/image-version
-	echo "imageversion=${META_VERSION}"                                             				>> ${IMAGE_ROOTFS_ETC_DIR}/image-version
-	echo "describe=${RELEASE_NAME_DISCRIBE}"                                        				>> ${IMAGE_ROOTFS_ETC_DIR}/image-version
-	echo "neutrino_src=${FLAVOUR}"                                                  				>> ${IMAGE_ROOTFS_ETC_DIR}/image-version
-	echo "imagedir=${MACHINE}"                                                      				>> ${IMAGE_ROOTFS_ETC_DIR}/image-version
-	echo "image_update_url=${IMAGE_LOCATION}"                                       				>> ${IMAGE_ROOTFS_ETC_DIR}/image-version
+	echo "version=${VERSION_STAMP}"   										>> ${IMAGE_VERSION_FILE}
+	echo "imagedescription=${IMAGE_DESCRIPTION}"                                    				>> ${IMAGE_VERSION_FILE}
+	echo "imageversion=${DISTRO_VERSION}"                                             				>> ${IMAGE_VERSION_FILE}
+	echo "describe=${RELEASE_NAME_DISCRIBE}"                                        				>> ${IMAGE_VERSION_FILE}
+	echo "neutrino_src=${FLAVOUR}"                                                  				>> ${IMAGE_VERSION_FILE}
+	echo "imagedir=${MACHINE}"                                                      				>> ${IMAGE_VERSION_FILE}
+	echo "image_update_url=${IMAGE_LOCATION_URL}"                                       				>> ${IMAGE_VERSION_FILE}
+
+	H=$(hostname)
+	BUILD_DIR=$(basename ${TOPDIR})
+
+	sed -i -e "s|@hostname@|${H}|g" "${IMAGE_VERSION_FILE}"
+	sed -i -e "s|@build-dirname@|${BUILD_DIR}|g" "${IMAGE_VERSION_FILE}"
 
 	# We create a symlink from /etc/image-version to /.version to have all required content
 	# and we have a compatible data source.
 	ln -sf /etc/image-version ${IMAGE_ROOTFS}/.version
 
-	# Finally we create content for update.urls file.
-	if [ ! -z ${RELEASE_TEXT_LOCATION_HOST} ]; then
-		if [ test ! -d ${DEPLOY_DIR_IMAGE} ]; then
+	# Create content for release text file (eg. beta.txt, release.txt or nightly.txt)
+	IMAGE_URL=${IMAGE_LOCATION_URL}/${IMAGE_NAME}_usb.zip
+	if [ ! -z ${RELEASE_TEXT_LOCATION_FILE} ]; then
+		if [ ! -d ${DEPLOY_DIR_IMAGE} ]; then
 			mkdir -p ${DEPLOY_DIR_IMAGE}
 		fi
-		echo "${IMAGE_LOCATION} ${VERSION_STAMP} MD5 ${RELEASE_NAME} ${IMAGE_DESCRIPTION} ${UPDATE_SERVER_URL}" > ${RELEASE_TEXT_LOCATION_HOST}
+		echo "${IMAGE_URL} ${VERSION_STAMP} MD5 ${RELEASE_NAME}-${IMAGE_DESCRIPTION} ${UPDATE_SERVER_URL}" >> ${RELEASE_TEXT_LOCATION_FILE}
+
+		sed -i -e "s|@hostname@|${H}|g" "${RELEASE_TEXT_LOCATION_FILE}"
+		sed -i -e "s|@build-dirname@|${BUILD_DIR}|g" "${RELEASE_TEXT_LOCATION_FILE}"
+	fi
+
+	# Create content for update.urls file and save it into rootfs
+	UPDATE_URL_FILES=$(find ${DEPLOY_DIR_IMAGE} -type f -name "*.txt" -exec basename {} \; | sed 's|^|${IMAGE_LOCATION_URL}/|')
+	echo "${UPDATE_URL_FILES}" > ${IMAGE_ROOTFS_ETC_DIR}/update.urls
+
+	sed -i -e "s|@hostname@|${H}|g" "${IMAGE_ROOTFS_ETC_DIR}/update.urls"
+	sed -i -e "s|@build-dirname@|${BUILD_DIR}|g" "${IMAGE_ROOTFS_ETC_DIR}/update.urls"
+}
+
+IMAGE_POSTPROCESS_COMMAND += "prepare_update_list_file; "
+# We create md5 checksum and replace the MD5 place holder with generated checksum
+prepare_update_list_file () {
+	IMAGEFILE=${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}_usb.zip
+
+	if [ -f "${IMAGEFILE}" ]; then
+		CHECKSUM=$(md5sum ${IMAGEFILE} | awk '{ print $1 }')
+		sed -i -e "s|MD5|${CHECKSUM}|" "${RELEASE_TEXT_LOCATION_FILE}"
+	else
+		bbwarn  "[${IMAGEFILE}] is not available or already built with last image and is up to date!"
 	fi
 }
 
-
-
 KERNEL_MODULES_INSTALLED += ""
-
 
 BIG_IMAGE_FILES = " \
 	bash \

@@ -179,13 +179,11 @@ do_install_prepend () {
 do_install_append() {
 	install -d ${D}${sysconfdir}/neutrino/bin ${D}${sysconfdir}/neutrino/plugins/luaplugins
 	install -d ${D}${sysconfdir}/neutrino/plugins/webradio ${D}${sysconfdir}/neutrino/plugins/webtv
-	# We install update.urls file, but with suffix '.disable'. 
-	# That causes disabling the formal online flash update menu entry within Neutrino which is using update.urls.
-	# Online flash updates will working only with the stb-flash.lua script.
-	# Nevertheless, you can remove the suffix '.disable', but flashing will never works.
-	if [ ! -z ${RELEASE_TEXT_LOCATION} ]; then
-		echo "${RELEASE_TEXT_LOCATION}" > ${D}/etc/update.urls.disable
-	fi
+
+	# We don't install the update.urls file with the neutrino target.
+	# The content is inserted during the creation of the image (See: neutrino-image-base.inc).
+	# touch ${D}/etc/update.urls
+
 	cp -rf ${WORKDIR}/etc ${D}
 	install -m 644 ${WORKDIR}/backup_rootfs.jpg ${D}${datadir}/tuxbox/neutrino/icons
 	install -m 644 ${WORKDIR}/update_download.jpg ${D}${datadir}/tuxbox/neutrino/icons
