@@ -1,19 +1,4 @@
 
-# set release type, configured in local.conf
-image_version_get_release_state() {
-	RES=""
-	if [ "${DISTRO_TYPE}" == "release" ]; then
-		RES="0"
-	elif [ "${DISTRO_TYPE}" == "beta" ]; then
-		RES="1"
-	elif [ "${DISTRO_TYPE}" == "nightly" ]; then
-		RES="2"
-	else
-		RES="3"
-	fi
-	echo "$RES"
-}
-
 image_version_get_flavour_tag() {
 	RES=""
 	if [ "${FLAVOUR}" != "tuxbox" ]; then
@@ -107,9 +92,8 @@ image_version_get_build_increment() {
 	fi
 }
 
-EXPORT_FUNCTIONS get_release_state  get_flavour_tag  get_poky_version  get_meta_tuxbox get_tuxbox_tag  get_tuxbox_version  get_meta_version  get_flavour_suffix  get_filename_prefix  get_filename_latest_prefix get_yearly_tag get_build_increment
+EXPORT_FUNCTIONS  get_flavour_tag  get_poky_version  get_meta_tuxbox get_tuxbox_tag  get_tuxbox_version  get_meta_version  get_flavour_suffix  get_filename_prefix  get_filename_latest_prefix get_yearly_tag get_build_increment
 
-export IMAGE_RELEASE_STATE="`get_release_state`"
 export IMAGE_FLAVOUR_TAG="`get_flavour_tag`"
 export IMAGE_YEARLY_TAG="`get_yearly_tag`"
 export IMAGE_POKY_VERSION="`get_poky_version`"
