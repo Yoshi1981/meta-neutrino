@@ -23,7 +23,7 @@ SRC_URI = " \
 	https://www.fontrepo.com/font/4281/pakenham.ttf \
 "
 
-SRC_URI[sha256sum] = "4ebb0c780855c08f45a0c98c7e9f4294370ccbdbf45b99f0a78adb6fbcf7ecfb"
+SRC_URI[sha256sum] = "e83b036f6d4e281807b8110c5871bafb7a936d0f25f0d38fa41a00cf2b055261"
 
 PR = "r3"
 
