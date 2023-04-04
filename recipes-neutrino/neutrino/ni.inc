@@ -1,3 +1,5 @@
+include neutrino-common-vars.inc
+
 HOMEPAGE = "https://www.neutrino-images.de"
 MAINTAINER = "Sven Hoefer"
 

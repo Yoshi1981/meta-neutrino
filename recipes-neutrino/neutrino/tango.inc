@@ -1,3 +1,5 @@
+include neutrino-common-vars.inc
+
 HOMEPAGE = "https://github.com/TangoCash"
 MAINTAINER = "TangoCash"
 

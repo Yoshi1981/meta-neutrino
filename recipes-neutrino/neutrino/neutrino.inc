@@ -1,4 +1,3 @@
-include neutrino-common-vars.inc
 
 PROVIDES = "virtual/neutrino"
 RPROVIDES_${PN} = "virtual/neutrino"
