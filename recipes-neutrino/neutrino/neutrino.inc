@@ -107,9 +107,6 @@ EXTRA_OECONF = " \
 	--with-hosted_httpddir=${N_HOSTED_HTTPDDIR} \
 	--with-flagdir=${N_FLAGDIR} \
 	\
-	--with-lcd4liconsdir=${N_LCD4L_ICONSDIR} \
-	--with-lcd4liconsdir_var=${N_LCD4L_ICONSDIR_VAR} \
-	\
 	--with-tmdb-dev-key="${TMDB_DEV_KEY}" \
 	--with-omdb-api-key="${OMDB_API_KEY}" \
 	--with-youtube-dev-key="${YT_DEV_KEY}" \
@@ -122,7 +119,6 @@ EXTRA_OECONF = " \
 	--disable-weather-key-manage \
 	\
 	--enable-pip \
-	--enable-pkg-management \
 	--enable-lcd4linux \
 "
 
