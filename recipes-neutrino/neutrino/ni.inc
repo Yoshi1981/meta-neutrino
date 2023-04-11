@@ -12,4 +12,5 @@ EXTRA_OECONF_append += " \
 			--with-boxtype=${TARGET_ARCH}box \
 			--with-boxmodel=${MACHINE} \
 			--with-targetroot=/usr \
+			--enable-pkg-management \
 "
