@@ -1,4 +1,5 @@
 
- include neutrino-lua-plugins-target-pattern.inc
+include neutrino-lua-plugins-target-pattern.inc
 
- SRC_NAME = "luaplayer"
+
+SRC_NAME = "luaplayer"
