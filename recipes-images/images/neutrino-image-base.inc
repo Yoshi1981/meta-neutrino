@@ -215,6 +215,7 @@ PLUGIN_INSTALL = " \
 PLUGIN_LUA_INSTALL = "	\
 	ard-mediathek \
 	logoupdater \
+	luaplayer \
 	mediathek \
 	mtv \
 	plutotv-vod \
