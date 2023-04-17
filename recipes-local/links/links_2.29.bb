@@ -15,6 +15,7 @@ SRC_URI = " \
 		file://bookmarks.html \
 		file://links-browser.cfg \
 		file://links-plugin.cfg \
+		file://links_hint.png \
 		file://tables.tar.gz;unpack=0 \
 "
 
@@ -47,6 +48,7 @@ do_install_append() {
 	install -m 0644 ${WORKDIR}/bookmarks ${D}${sysconfdir}/neutrino/config
         install -m 0644 ${WORKDIR}/links-browser.cfg ${D}${sysconfdir}/neutrino/config/links/links.cfg
         install -m 0644 ${WORKDIR}/links-plugin.cfg ${D}${datadir}/tuxbox/neutrino/plugins/links.cfg
+	install -m 0644 ${WORKDIR}/links_hint.png ${D}${datadir}/tuxbox/neutrino/plugins/links_hint.png
 	touch ${D}${sysconfdir}/neutrino/config/links/links.his
         install -m 0644 ${WORKDIR}/bookmarks.html ${D}${sysconfdir}/neutrino/config/links
         install -m 0644 ${WORKDIR}/tables.tar.gz ${D}${sysconfdir}/neutrino/config/links
