@@ -3,7 +3,7 @@ SRC_DEST_SUFFIX = "src"
 SRC_NAME = "${BPN}"
 
 SRC_URI = " \
-	git://github.com/tuxbox-neutrino/plugin-scripts-lua.git;protocol=https;subpath=plugins/${SRC_NAME};destsuffix=${SRC_DEST_SUFFIX} \
+	git://github.com/Yoshi1981/plugin-scripts-lua.git;protocol=https;subpath=plugins/${SRC_NAME};destsuffix=${SRC_DEST_SUFFIX} \
 "
 
 LICENSE = "GPL-2.0"
