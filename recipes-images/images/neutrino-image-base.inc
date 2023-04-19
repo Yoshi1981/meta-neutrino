@@ -295,7 +295,7 @@ EXTRA_IMAGEDEPENDS = " \
 	heizoelpreise \
 	logomask \
 	myspass \
-	netzkino  \
+	netzkino \
 	rcu-switcher \
 	stb-log \
 	stb-move \
